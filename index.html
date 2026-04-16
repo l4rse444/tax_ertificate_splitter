@@ -18,28 +18,12 @@
     padding: 3rem 1.5rem 5rem;
   }
 
-  .page {
-    max-width: 560px;
-    margin: 0 auto;
-  }
+  .page { max-width: 560px; margin: 0 auto; }
 
-  .site-header {
-    margin-bottom: 3rem;
-  }
+  .site-header { margin-bottom: 3rem; }
+  .site-header h1 { font-size: 1.05rem; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 0.3rem; }
+  .site-header .subtitle { font-size: 0.8rem; color: #888; }
 
-  .site-header h1 {
-    font-size: 1.05rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.3rem;
-  }
-
-  .site-header .subtitle {
-    font-size: 0.8rem;
-    color: #888;
-  }
-
-  /* Steps */
   .step {
     display: flex;
     gap: 1.25rem;
@@ -47,258 +31,125 @@
     opacity: 0.35;
     transition: opacity 0.2s;
   }
-
   .step.active { opacity: 1; }
   .step.done { opacity: 0.65; }
 
   .step-num {
     flex-shrink: 0;
-    width: 22px;
-    height: 22px;
+    width: 22px; height: 22px;
     border-radius: 50%;
     border: 1.5px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: #999;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 500; color: #999;
     margin-top: 1px;
     transition: border-color 0.2s, color 0.2s, background 0.2s;
   }
-
-  .step.active .step-num {
-    border-color: #1a1a1a;
-    color: #1a1a1a;
-  }
-
-  .step.done .step-num {
-    border-color: #1a1a1a;
-    background: #1a1a1a;
-    color: #fff;
-    font-size: 0.6rem;
-  }
+  .step.active .step-num { border-color: #1a1a1a; color: #1a1a1a; }
+  .step.done .step-num { border-color: #1a1a1a; background: #1a1a1a; color: #fff; font-size: 0.6rem; }
 
   .step-body { flex: 1; }
 
   .step-label {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: #aaa;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 0.65rem;
+    font-size: 0.72rem; font-weight: 500; color: #aaa;
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.65rem;
   }
-
   .step.active .step-label { color: #1a1a1a; }
 
-  /* Drop zone */
   .drop-zone {
     position: relative;
     border: 1.5px dashed #d5d5d5;
     border-radius: 8px;
     padding: 2rem 1.5rem;
-    text-align: center;
-    cursor: pointer;
+    text-align: center; cursor: pointer;
     background: #fff;
-    transition: border-color 0.15s, background 0.15s;
+    transition: border-color 0.15s;
   }
-
-  .drop-zone:hover,
-  .drop-zone.drag-over {
-    border-color: #1a1a1a;
-  }
-
+  .drop-zone:hover, .drop-zone.drag-over { border-color: #1a1a1a; }
   .drop-zone input[type="file"] {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
   }
+  .drop-zone .drop-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+  .drop-zone .drop-label { font-size: 0.82rem; color: #999; line-height: 1.5; }
+  .drop-zone .drop-label strong { color: #1a1a1a; font-weight: 500; }
+  .drop-zone .drop-hint { font-size: 0.72rem; color: #c0c0c0; margin-top: 0.25rem; }
 
-  .drop-zone .drop-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-
-  .drop-zone .drop-label {
-    font-size: 0.82rem;
-    color: #999;
-    line-height: 1.5;
-  }
-
-  .drop-zone .drop-label strong {
-    color: #1a1a1a;
-    font-weight: 500;
-  }
-
-  .drop-zone .drop-hint {
-    font-size: 0.72rem;
-    color: #c0c0c0;
-    margin-top: 0.25rem;
-  }
-
-  /* File pill */
   .file-pill {
-    display: none;
-    align-items: center;
-    gap: 0.6rem;
+    display: none; align-items: center; gap: 0.6rem;
     padding: 0.55rem 0.85rem;
-    background: #fff;
-    border: 1.5px solid #e5e5e5;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    color: #444;
-    margin-top: 0.75rem;
+    background: #fff; border: 1.5px solid #e5e5e5; border-radius: 6px;
+    font-size: 0.8rem; color: #444; margin-top: 0.75rem;
   }
-
   .file-pill.visible { display: flex; }
   .file-pill .pill-name { flex: 1; font-weight: 500; color: #1a1a1a; }
-  .file-pill .pill-remove {
-    cursor: pointer;
-    color: #ccc;
-    font-size: 0.9rem;
-    transition: color 0.1s;
-  }
+  .file-pill .pill-remove { cursor: pointer; color: #ccc; font-size: 0.9rem; transition: color 0.1s; }
   .file-pill .pill-remove:hover { color: #cc3333; }
 
-  /* Log */
   .log-box {
     display: none;
-    border: 1.5px solid #ebebeb;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #fff;
-    margin-top: 0.85rem;
+    border: 1.5px solid #ebebeb; border-radius: 8px; overflow: hidden;
+    background: #fff; margin-top: 0.85rem;
   }
-
   .log-box.visible { display: block; }
-
   .log-box-header {
-    padding: 0.4rem 0.85rem;
-    background: #f5f5f3;
+    padding: 0.4rem 0.85rem; background: #f5f5f3;
     border-bottom: 1px solid #ebebeb;
-    font-size: 0.67rem;
-    font-weight: 500;
-    color: #bbb;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    font-size: 0.67rem; font-weight: 500; color: #bbb;
+    text-transform: uppercase; letter-spacing: 0.08em;
   }
-
   .log-lines {
-    padding: 0.75rem 0.85rem;
-    font-size: 0.77rem;
-    line-height: 1.85;
-    max-height: 180px;
-    overflow-y: auto;
+    padding: 0.75rem 0.85rem; font-size: 0.77rem; line-height: 1.85;
+    max-height: 180px; overflow-y: auto;
   }
-
   .log-line { color: #999; }
   .log-line.ok { color: #2a9e5e; }
   .log-line.err { color: #cc3333; }
   .log-line.info { color: #555; }
 
-  /* Result list */
   .result-list {
-    border: 1.5px solid #ebebeb;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #fff;
+    border: 1.5px solid #ebebeb; border-radius: 8px; overflow: hidden; background: #fff;
   }
-
   .result-item {
-    display: flex;
-    align-items: center;
-    padding: 0.6rem 1rem;
-    border-bottom: 1px solid #f2f2f2;
-    font-size: 0.82rem;
-    gap: 0.75rem;
+    display: flex; align-items: center;
+    padding: 0.6rem 1rem; border-bottom: 1px solid #f2f2f2;
+    font-size: 0.82rem; gap: 0.75rem;
   }
-
   .result-item:last-child { border-bottom: none; }
-
   .result-icon { color: #ccc; }
   .result-name { flex: 1; color: #333; }
-
   .result-dl {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: #1a1a1a;
-    text-decoration: none;
-    padding: 0.22rem 0.6rem;
-    border: 1.5px solid #ddd;
-    border-radius: 4px;
-    transition: border-color 0.1s, background 0.1s;
-    white-space: nowrap;
+    font-size: 0.72rem; font-weight: 500; color: #1a1a1a; text-decoration: none;
+    padding: 0.22rem 0.6rem; border: 1.5px solid #ddd; border-radius: 4px;
+    transition: border-color 0.1s, background 0.1s; white-space: nowrap;
   }
+  .result-dl:hover { border-color: #1a1a1a; background: #f5f5f5; }
 
-  .result-dl:hover {
-    border-color: #1a1a1a;
-    background: #f5f5f5;
-  }
-
-  /* Buttons */
   .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.62rem 1.15rem;
-    background: #1a1a1a;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 0.82rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: opacity 0.15s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.62rem 1.15rem; background: #1a1a1a; color: #fff;
+    border: none; border-radius: 6px; font-family: inherit;
+    font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: opacity 0.15s;
   }
-
   .btn-primary:hover:not(:disabled) { opacity: 0.8; }
   .btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
 
   .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.62rem 1.15rem;
-    background: transparent;
-    color: #666;
-    border: 1.5px solid #ddd;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 0.82rem;
-    cursor: pointer;
-    transition: border-color 0.1s, color 0.1s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.62rem 1.15rem; background: transparent; color: #666;
+    border: 1.5px solid #ddd; border-radius: 6px; font-family: inherit;
+    font-size: 0.82rem; cursor: pointer; transition: border-color 0.1s, color 0.1s;
   }
-
   .btn-secondary:hover { border-color: #999; color: #1a1a1a; }
 
-  .btn-row {
-    display: flex;
-    gap: 0.65rem;
-    flex-wrap: wrap;
-  }
+  .btn-row { display: flex; gap: 0.65rem; flex-wrap: wrap; }
 
   .spinner {
     width: 11px; height: 11px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
+    border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.6s linear infinite;
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .privacy-note {
-    margin-top: 3.5rem;
-    font-size: 0.72rem;
-    color: #c0c0c0;
-    text-align: center;
-  }
+  .privacy-note { margin-top: 3.5rem; font-size: 0.72rem; color: #c0c0c0; text-align: center; }
 </style>
 </head>
 <body>
@@ -366,6 +217,7 @@ const { PDFDocument } = PDFLib;
 let selectedFile = null;
 const generatedFiles = [];
 
+// --- State ---
 function setStep(n) {
   [1,2,3].forEach(i => {
     const el = document.getElementById('step' + i);
@@ -391,7 +243,7 @@ function clearLog() {
   document.getElementById('logBox').classList.remove('visible');
 }
 
-// File pick
+// --- File input ---
 document.getElementById('fileInput').addEventListener('change', e => {
   if (e.target.files[0]) pickFile(e.target.files[0]);
 });
@@ -426,7 +278,7 @@ document.getElementById('pillRemove').addEventListener('click', () => {
   setStep(1);
 });
 
-// Process
+// --- Process ---
 document.getElementById('processBtn').addEventListener('click', async () => {
   if (!selectedFile) return;
   const btn = document.getElementById('processBtn');
@@ -443,6 +295,10 @@ document.getElementById('processBtn').addEventListener('click', async () => {
 
     log('Extracting employee names…');
     const names = await extractNames(ab, total);
+
+    // Report any missing
+    const missing = names.filter(n => !n).length;
+    if (missing > 0) log(`Warning: ${missing} page(s) had no name detected`, 'err');
 
     const groups = groupPages(names, total);
     log(`${groups.length} employees identified`, 'ok');
@@ -470,6 +326,7 @@ document.getElementById('processBtn').addEventListener('click', async () => {
   btn.innerHTML = 'Split PDF';
 });
 
+// --- PDF.js name extraction ---
 async function extractNames(ab, total) {
   if (!window.pdfjsLib) {
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
@@ -482,29 +339,79 @@ async function extractNames(ab, total) {
     const page = await pdf.getPage(i);
     const content = await page.getTextContent();
     const lines = toLines(content.items);
-    names.push(nameFromLines(lines));
+    const name = nameFromLines(lines);
+    names.push(name);
   }
   return names;
 }
 
+/**
+ * Build lines from PDF.js text items.
+ * Groups items by Y position, inserts spaces between words based on gaps,
+ * then joins each line.
+ */
 function toLines(items) {
-  const map = {};
+  if (!items.length) return [];
+
+  // Group items by rounded Y (bottom of text in PDF.js coords)
+  const lineMap = {};
   for (const item of items) {
+    if (!item.str) continue;
     const y = Math.round(item.transform[5]);
-    if (!map[y]) map[y] = [];
-    map[y].push(item.str);
+    if (!lineMap[y]) lineMap[y] = [];
+    lineMap[y].push(item);
   }
-  return Object.entries(map)
-    .sort((a,b) => b[0]-a[0])
-    .map(([,parts]) => parts.join('').trim())
-    .filter(Boolean);
+
+  // Sort Y descending (top of page first in PDF coordinate space where y grows up)
+  const sortedYs = Object.keys(lineMap).map(Number).sort((a, b) => b - a);
+
+  const lines = [];
+  for (const y of sortedYs) {
+    // Sort items left to right by x position
+    const rowItems = lineMap[y].sort((a, b) => a.transform[4] - b.transform[4]);
+
+    let lineStr = '';
+    for (let i = 0; i < rowItems.length; i++) {
+      const item = rowItems[i];
+      if (i === 0) {
+        lineStr = item.str;
+      } else {
+        const prev = rowItems[i - 1];
+        // Calculate end x of previous item
+        const prevEndX = prev.transform[4] + (prev.width || 0);
+        const currStartX = item.transform[4];
+        const gap = currStartX - prevEndX;
+        // If gap is larger than ~1/3 of a typical character width, insert a space
+        const fontSize = Math.abs(item.transform[3]) || 10;
+        if (gap > fontSize * 0.3) {
+          lineStr += ' ';
+        }
+        lineStr += item.str;
+      }
+    }
+
+    const trimmed = lineStr.trim();
+    if (trimmed) lines.push(trimmed);
+  }
+  return lines;
 }
 
+/**
+ * Find employee name: 4 lines after the *Pers.-Nr.* line.
+ * The name line is clean (no trailing form text) in PDF.js output.
+ * Falls back to stripping trailing form text if needed.
+ */
 function nameFromLines(lines) {
   for (let i = 0; i < lines.length; i++) {
-    if (/\*Pers\.-Nr\./.test(lines[i]) && i+4 < lines.length) {
-      const name = lines[i+4].replace(/\s+\d+\..*$/, '').trim();
-      if (name.length > 1) return name;
+    // Match *Pers.-Nr. with optional spaces (handles both "* Pers.-Nr. 00025 * TIL" and "*Pers.-Nr.00025*QON")
+    if (/\*\s*Pers\.-Nr\./.test(lines[i]) && i + 4 < lines.length) {
+      const candidate = lines[i + 4].trim();
+      // Strip any trailing form text that starts with a digit+dot (e.g. "9.Versorgungsbezüge...")
+      const name = candidate.replace(/\s+\d+\.\s*\S.*$/, '').trim();
+      // Sanity check: looks like a name (at least 2 chars, no pure numbers)
+      if (name.length > 1 && !/^\d+$/.test(name)) {
+        return name;
+      }
     }
   }
   return null;
@@ -517,7 +424,7 @@ function groupPages(names, total) {
     const name = names[i];
     if (!name) { i++; continue; }
     const pages = [i];
-    let j = i+1;
+    let j = i + 1;
     while (j < total && names[j] === name) pages.push(j), j++;
     groups.push({ name, pages });
     i = j;
@@ -525,6 +432,7 @@ function groupPages(names, total) {
   return groups;
 }
 
+// --- Render results ---
 function renderResults() {
   const list = document.getElementById('resultList');
   list.innerHTML = '';
@@ -542,6 +450,7 @@ function renderResults() {
   document.getElementById('downloadRow').style.display = 'flex';
 }
 
+// --- Download all as ZIP ---
 document.getElementById('downloadAllBtn').addEventListener('click', async () => {
   const btn = document.getElementById('downloadAllBtn');
   btn.innerHTML = '<span class="spinner"></span> Zipping…';
@@ -557,6 +466,7 @@ document.getElementById('downloadAllBtn').addEventListener('click', async () => 
   btn.disabled = false;
 });
 
+// --- Start over ---
 document.getElementById('startOverBtn').addEventListener('click', () => {
   selectedFile = null;
   generatedFiles.length = 0;
