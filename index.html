@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tax Certificate Splitter</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    background: #f7f7f5;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .page {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .site-header {
+    margin-bottom: 3rem;
+  }
+
+  .site-header h1 {
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.3rem;
+  }
+
+  .site-header .subtitle {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  /* Steps */
+  .step {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.35;
+    transition: opacity 0.2s;
+  }
+
+  .step.active { opacity: 1; }
+  .step.done { opacity: 0.65; }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #999;
+    margin-top: 1px;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .step.active .step-num {
+    border-color: #1a1a1a;
+    color: #1a1a1a;
+  }
+
+  .step.done .step-num {
+    border-color: #1a1a1a;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 0.6rem;
+  }
+
+  .step-body { flex: 1; }
+
+  .step-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.65rem;
+  }
+
+  .step.active .step-label { color: #1a1a1a; }
+
+  /* Drop zone */
+  .drop-zone {
+    position: relative;
+    border: 1.5px dashed #d5d5d5;
+    border-radius: 8px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    background: #fff;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.drag-over {
+    border-color: #1a1a1a;
+  }
+
+  .drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .drop-zone .drop-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .drop-zone .drop-label {
+    font-size: 0.82rem;
+    color: #999;
+    line-height: 1.5;
+  }
+
+  .drop-zone .drop-label strong {
+    color: #1a1a1a;
+    font-weight: 500;
+  }
+
+  .drop-zone .drop-hint {
+    font-size: 0.72rem;
+    color: #c0c0c0;
+    margin-top: 0.25rem;
+  }
+
+  /* File pill */
+  .file-pill {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.85rem;
+    background: #fff;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #444;
+    margin-top: 0.75rem;
+  }
+
+  .file-pill.visible { display: flex; }
+  .file-pill .pill-name { flex: 1; font-weight: 500; color: #1a1a1a; }
+  .file-pill .pill-remove {
+    cursor: pointer;
+    color: #ccc;
+    font-size: 0.9rem;
+    transition: color 0.1s;
+  }
+  .file-pill .pill-remove:hover { color: #cc3333; }
+
+  /* Log */
+  .log-box {
+    display: none;
+    border: 1.5px solid #ebebeb;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    margin-top: 0.85rem;
+  }
+
+  .log-box.visible { display: block; }
+
+  .log-box-header {
+    padding: 0.4rem 0.85rem;
+    background: #f5f5f3;
+    border-bottom: 1px solid #ebebeb;
+    font-size: 0.67rem;
+    font-weight: 500;
+    color: #bbb;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .log-lines {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.77rem;
+    line-height: 1.85;
+    max-height: 180px;
+    overflow-y: auto;
+  }
+
+  .log-line { color: #999; }
+  .log-line.ok { color: #2a9e5e; }
+  .log-line.err { color: #cc3333; }
+  .log-line.info { color: #555; }
+
+  /* Result list */
+  .result-list {
+    border: 1.5px solid #ebebeb;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .result-item {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 0.82rem;
+    gap: 0.75rem;
+  }
+
+  .result-item:last-child { border-bottom: none; }
+
+  .result-icon { color: #ccc; }
+  .result-name { flex: 1; color: #333; }
+
+  .result-dl {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    text-decoration: none;
+    padding: 0.22rem 0.6rem;
+    border: 1.5px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.1s, background 0.1s;
+    white-space: nowrap;
+  }
+
+  .result-dl:hover {
+    border-color: #1a1a1a;
+    background: #f5f5f5;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.62rem 1.15rem;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .btn-primary:hover:not(:disabled) { opacity: 0.8; }
+  .btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.62rem 1.15rem;
+    background: transparent;
+    color: #666;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: border-color 0.1s, color 0.1s;
+  }
+
+  .btn-secondary:hover { border-color: #999; color: #1a1a1a; }
+
+  .btn-row {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .spinner {
+    width: 11px; height: 11px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .privacy-note {
+    margin-top: 3.5rem;
+    font-size: 0.72rem;
+    color: #c0c0c0;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="site-header">
+    <h1>Tax Certificate Splitter</h1>
+    <p class="subtitle">All processing happens locally — no data is ever transmitted</p>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-label">Upload PDF</div>
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept=".pdf">
+        <span class="drop-icon">📄</span>
+        <div class="drop-label">Drop file or <strong>click to browse</strong></div>
+        <div class="drop-hint">Consolidated Lohnsteuerbescheinigung · .pdf</div>
+      </div>
+      <div class="file-pill" id="filePill">
+        <span>📄</span>
+        <span class="pill-name" id="pillName"></span>
+        <span class="pill-remove" id="pillRemove" title="Remove">✕</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step" id="step2">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-label">Split</div>
+      <div class="btn-row">
+        <button class="btn-primary" id="processBtn" disabled>Split PDF</button>
+      </div>
+      <div class="log-box" id="logBox">
+        <div class="log-box-header">Log</div>
+        <div class="log-lines" id="logLines"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step" id="step3">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-label">Download</div>
+      <div class="result-list" id="resultList" style="display:none; margin-bottom:0.85rem"></div>
+      <div class="btn-row" id="downloadRow" style="display:none">
+        <button class="btn-primary" id="downloadAllBtn">Download all as ZIP</button>
+        <button class="btn-secondary" id="startOverBtn">Start over</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="privacy-note">No files are uploaded to any server. Everything runs in your browser.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const { PDFDocument } = PDFLib;
+let selectedFile = null;
+const generatedFiles = [];
+
+function setStep(n) {
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('step' + i);
+    el.classList.remove('active','done');
+    if (i < n) el.classList.add('done');
+    if (i === n) el.classList.add('active');
+    el.querySelector('.step-num').textContent = i < n ? '✓' : String(i);
+  });
+}
+
+function log(msg, type='') {
+  const lines = document.getElementById('logLines');
+  const el = document.createElement('div');
+  el.className = 'log-line' + (type ? ' '+type : '');
+  el.textContent = msg;
+  lines.appendChild(el);
+  lines.scrollTop = lines.scrollHeight;
+  document.getElementById('logBox').classList.add('visible');
+}
+
+function clearLog() {
+  document.getElementById('logLines').innerHTML = '';
+  document.getElementById('logBox').classList.remove('visible');
+}
+
+// File pick
+document.getElementById('fileInput').addEventListener('change', e => {
+  if (e.target.files[0]) pickFile(e.target.files[0]);
+});
+
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type === 'application/pdf') pickFile(f);
+});
+
+function pickFile(f) {
+  selectedFile = f;
+  document.getElementById('pillName').textContent = f.name;
+  document.getElementById('filePill').classList.add('visible');
+  document.getElementById('processBtn').disabled = false;
+  document.getElementById('resultList').style.display = 'none';
+  document.getElementById('downloadRow').style.display = 'none';
+  generatedFiles.length = 0;
+  clearLog();
+  setStep(2);
+}
+
+document.getElementById('pillRemove').addEventListener('click', () => {
+  selectedFile = null;
+  document.getElementById('filePill').classList.remove('visible');
+  document.getElementById('processBtn').disabled = true;
+  document.getElementById('fileInput').value = '';
+  clearLog();
+  setStep(1);
+});
+
+// Process
+document.getElementById('processBtn').addEventListener('click', async () => {
+  if (!selectedFile) return;
+  const btn = document.getElementById('processBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Processing…';
+  clearLog();
+
+  try {
+    log(`Reading "${selectedFile.name}"…`, 'info');
+    const ab = await selectedFile.arrayBuffer();
+    const pdfDoc = await PDFDocument.load(ab);
+    const total = pdfDoc.getPageCount();
+    log(`${total} pages found`, 'info');
+
+    log('Extracting employee names…');
+    const names = await extractNames(ab, total);
+
+    const groups = groupPages(names, total);
+    log(`${groups.length} employees identified`, 'ok');
+
+    log('Generating individual PDFs…');
+    generatedFiles.length = 0;
+    for (const { name, pages } of groups) {
+      const doc = await PDFDocument.create();
+      const copied = await doc.copyPages(pdfDoc, pages);
+      copied.forEach(p => doc.addPage(p));
+      const bytes = await doc.save();
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      generatedFiles.push({ name, blob, url: URL.createObjectURL(blob) });
+      log(`✓ ${name}`, 'ok');
+    }
+
+    renderResults();
+    setStep(3);
+  } catch(err) {
+    log('Error: ' + err.message, 'err');
+    console.error(err);
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = 'Split PDF';
+});
+
+async function extractNames(ab, total) {
+  if (!window.pdfjsLib) {
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+  const names = [];
+  for (let i = 1; i <= total; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const lines = toLines(content.items);
+    names.push(nameFromLines(lines));
+  }
+  return names;
+}
+
+function toLines(items) {
+  const map = {};
+  for (const item of items) {
+    const y = Math.round(item.transform[5]);
+    if (!map[y]) map[y] = [];
+    map[y].push(item.str);
+  }
+  return Object.entries(map)
+    .sort((a,b) => b[0]-a[0])
+    .map(([,parts]) => parts.join('').trim())
+    .filter(Boolean);
+}
+
+function nameFromLines(lines) {
+  for (let i = 0; i < lines.length; i++) {
+    if (/\*Pers\.-Nr\./.test(lines[i]) && i+4 < lines.length) {
+      const name = lines[i+4].replace(/\s+\d+\..*$/, '').trim();
+      if (name.length > 1) return name;
+    }
+  }
+  return null;
+}
+
+function groupPages(names, total) {
+  const groups = [];
+  let i = 0;
+  while (i < total) {
+    const name = names[i];
+    if (!name) { i++; continue; }
+    const pages = [i];
+    let j = i+1;
+    while (j < total && names[j] === name) pages.push(j), j++;
+    groups.push({ name, pages });
+    i = j;
+  }
+  return groups;
+}
+
+function renderResults() {
+  const list = document.getElementById('resultList');
+  list.innerHTML = '';
+  for (const { name, url } of generatedFiles) {
+    const el = document.createElement('div');
+    el.className = 'result-item';
+    el.innerHTML = `
+      <span class="result-icon">📄</span>
+      <span class="result-name">${name}</span>
+      <a class="result-dl" href="${url}" download="${name}.pdf">Download</a>
+    `;
+    list.appendChild(el);
+  }
+  list.style.display = 'block';
+  document.getElementById('downloadRow').style.display = 'flex';
+}
+
+document.getElementById('downloadAllBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('downloadAllBtn');
+  btn.innerHTML = '<span class="spinner"></span> Zipping…';
+  btn.disabled = true;
+  const zip = new JSZip();
+  for (const { name, blob } of generatedFiles) zip.file(`${name}.pdf`, blob);
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(zipBlob);
+  a.download = 'tax_certificates.zip';
+  a.click();
+  btn.innerHTML = 'Download all as ZIP';
+  btn.disabled = false;
+});
+
+document.getElementById('startOverBtn').addEventListener('click', () => {
+  selectedFile = null;
+  generatedFiles.length = 0;
+  document.getElementById('filePill').classList.remove('visible');
+  document.getElementById('fileInput').value = '';
+  document.getElementById('processBtn').disabled = true;
+  document.getElementById('resultList').style.display = 'none';
+  document.getElementById('downloadRow').style.display = 'none';
+  clearLog();
+  setStep(1);
+});
+
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+</script>
+</body>
+</html>
